@@ -13,8 +13,7 @@ node server.js
 ## Usage
 
 - Enter zip code
-- Select units format
-- Write a comment
+- Write your feelings
 - Click Go button
 
 ## Contributing
