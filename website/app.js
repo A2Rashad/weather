@@ -1,8 +1,8 @@
 /* Global Variables */
 
 // Personal API Key for OpenWeatherMap API
-const keyID = '&appid=b5835ff4355f31c2bba4d62ae8565145';
-const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
+const keyID = '';
+const baseURL = 'https://api.openweathermap.org/data/2.5/weather';
 // Create a new date instance dynamically with JS
 let d = new Date();
 let date = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
@@ -12,19 +12,19 @@ document.getElementById('generate').addEventListener('click' , getWeather);
 
 /* Function called by event listener */
 function getWeather(event) {
+  event.preventDefault();
   const zipCode = document.getElementById('inputZipcode').value;
   const feel = document.getElementById('inputFeelings').value;
   getTemp(baseURL,zipCode,keyID)
     .then(data => {
-      const temp = data.main.temp;
-      postData('/add',{temp , date , feel});
+      postData('http://localhost:3000/add',{temp : data.main.temp , date: date , feel : feel});
     });
     updateUI();
 };
 
 /* Function to GET Web API Data*/
 const getTemp = async (url,zip,key) =>{
-  const response = await fetch(url,zip,key)
+  const response = await fetch(`${url}?zip=${zip},us&units=metric&APPID=${key}`);
   try {
     const data = await response.json();
     return data;
@@ -55,12 +55,12 @@ const postData = async (url = '', data = {}) => {
 
 /* Function to GET Project Data */
 const updateUI = async () => {
-  const data = await fetch ('/all');
-  document.getElementById('temp').innerHTML = `Temperature: ${data.temp}`;
-  document.getElementById('date').innerHTML = `Date: ${data.date}`;
-  document.getElementById('feel').innerHTML = `Feeling: ${data.feel}`;
+  const getData = await fetch ('http://localhost:3000/all');
   try {
     const data = await getData.json();
+    document.getElementById('temp').innerHTML = `Temperature: ${data.temp}`;
+    document.getElementById('date').innerHTML = `Date: ${data.date}`;
+    document.getElementById('feel').innerHTML = `Feeling: ${data.feel}`;
   } catch (err) {
     console.log('Error' , err)
   }

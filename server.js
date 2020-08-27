@@ -22,14 +22,15 @@ app.use(express.static('website'));
 // Callback function to complete GET '/all'
 app.get('/all', (req , res) => {
   res.send(projectData);
+  projectData = {};
 });
 
 // Post Route
 app.post('/add', (req , res) => {
   projectData = {
-    temperature : req.body.temp,
+    temp : req.body.temp,
     date : req.body.date,
-    feeling : req.body.feel
+    feel : req.body.feel
   }
 });
 
